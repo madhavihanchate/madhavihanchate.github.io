@@ -73,8 +73,7 @@
   h1.hero-name{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;line-height:1.1;letter-spacing:-.02em;opacity:0;transform:scale(.9)}
   h1.hero-name.show{animation:heroIn 1s .4s both}
   @keyframes heroIn{0%{opacity:0;transform:scale(.9) translateY(30px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-  .name-first{color:var(--text)}
-  .name-last{background:linear-gradient(135deg,var(--accent)0%,var(--accent2)60%,var(--accent3)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:grad-drift 5s ease infinite}
+  .name-first,.name-last{background:linear-gradient(135deg,var(--accent)0%,var(--accent2)60%,var(--accent3)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:grad-drift 5s ease infinite}
   @keyframes grad-drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
   .hero-title{margin-top:.75rem;font-family:var(--mono);font-size:clamp(.95rem,2vw,1.25rem);color:var(--muted);opacity:0}
@@ -97,12 +96,6 @@
   .btn-primary span,.btn-primary svg{position:relative;z-index:1}
   .btn-ghost{background:transparent;color:var(--accent2);border:1px solid rgba(56,189,248,.35)}
   .btn-ghost:hover{background:rgba(56,189,248,.08);transform:translateY(-3px)}
-
-  .hero-stats{display:flex;gap:3rem;margin-top:3.5rem;justify-content:center;flex-wrap:wrap;opacity:0}
-  .hero-stats.show{animation:fadeUp .6s 1.3s both}
-  .stat{text-align:center}
-  .stat-num{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block}
-  .stat-label{font-size:.8rem;color:var(--muted);margin-top:.15rem}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
@@ -144,21 +137,6 @@
   .tag-violet{background:rgba(129,140,248,.1);border-color:rgba(129,140,248,.3);color:#c4b5fd}
   .tag-green{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac}
   .tag-orange{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.3);color:#fdba74}
-
-  #projects{padding:6rem 2rem;max-width:1100px;margin:0 auto}
-  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:3rem;margin-top:3rem}
-  .project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;backdrop-filter:blur(10px);display:flex;flex-direction:column;will-change:transform}
-  .project-banner{height:130px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
-  .project-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--card) 100%)}
-  .project-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
-  .project-category{font-family:var(--mono);font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
-  .project-name{font-size:1.15rem;font-weight:600;margin-bottom:.6rem}
-  .project-desc{font-size:.875rem;color:#94a3b8;flex:1;margin-bottom:1.25rem}
-  .project-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
-  .project-stack .tag{font-size:.7rem}
-  .project-links{display:flex;gap:.75rem;margin-top:auto}
-  .project-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:500;color:var(--accent2);text-decoration:none;border:1px solid rgba(56,189,248,.25);padding:.4rem .9rem;border-radius:6px;transition:all .25s}
-  .project-link:hover{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.5);transform:translateY(-2px)}
 
   #contact{padding:8rem 2rem 8rem;background:linear-gradient(180deg,transparent,rgba(7,20,40,.5))}
   .contact-inner{max-width:700px;margin:0 auto;text-align:center}
@@ -209,7 +187,6 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -228,14 +205,8 @@
   </p>
   <p class="hero-desc" id="heroDesc">Transforming raw data into intelligent solutions. I build ML models, explore deep learning systems, and craft full-stack applications that bring AI to life.</p>
   <div class="hero-cta" id="heroCta">
-    <a href="#projects" class="btn btn-primary"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>View My Work</span></a>
+    <a href="#contact" class="btn btn-primary"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg><span>Get In Touch</span></a>
     <a href="#contact" class="btn btn-ghost"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg><span>Get In Touch</span></a>
-  </div>
-  <div class="hero-stats" id="heroStats">
-    <div class="stat"><div class="stat-num" data-count="15">0</div><div class="stat-label">ML Projects</div></div>
-    <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">Years Learning</div></div>
-    <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-label">Technologies</div></div>
-    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
   </div>
 </section>
 
@@ -299,31 +270,7 @@
   </div>
 </section>
 
-<section id="projects">
-  <div class="reveal"><div class="section-label">what i've built</div><h2 class="section-title">Featured <span class="acc">Projects</span></h2><div class="divider"></div></div>
-  <div class="projects-grid">
-    <div class="project-card reveal" data-tilt>
-      <div class="project-banner" style="background:linear-gradient(135deg,#0a1f1a,#0d3b2e)">🩸</div>
-      <div class="project-body">
-        <div class="project-category">Computer Vision · Healthcare · ML</div>
-        <div class="project-name">ANISCOR — Non-Invasive Anaemia Detection</div>
-        <div class="project-desc">A deep learning system that detects anaemia without blood tests, using ResNet50 to analyse conjunctiva and nail bed images for haemoglobin-level indicators. Offers a fast, painless screening alternative for resource-limited settings.</div>
-        <div class="project-stack"><span class="tag tag-blue">ResNet50</span><span class="tag tag-cyan">Python</span><span class="tag tag-green">OpenCV</span><span class="tag tag-violet">HTML/CSS</span><span class="tag tag-orange">TensorFlow</span></div>
-        <div class="project-links"><a href="#" class="project-link"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a><a href="#" class="project-link"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Live Demo</a></div>
-      </div>
-    </div>
-    <div class="project-card reveal" data-tilt>
-      <div class="project-banner" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">🤖</div>
-      <div class="project-body">
-        <div class="project-category">AI · LLM · Streamlit</div>
-        <div class="project-name">AI Interview Prep Assistant</div>
-        <div class="project-desc">An AI-powered interview preparation platform built using Streamlit, Ollama, and Llama 3.2. Generates role-specific interview questions and provides automated answer evaluation with scoring, strengths, weaknesses, and ideal responses.</div>
-        <div class="project-stack"><span class="tag tag-blue">Python</span><span class="tag tag-cyan">Streamlit</span><span class="tag tag-violet">Ollama</span><span class="tag tag-orange">Llama 3.2</span></div>
-        <div class="project-links"><a href="https://github.com/madhavihanchate/AI-Interview-Prep-Assistant" target="_blank" class="project-link"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub</a><a href="https://github.com/madhavihanchate/AI-Interview-Prep-Assistant" target="_blank" class="project-link"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Repository</a></div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <section id="contact">
   <div class="contact-inner">
@@ -625,7 +572,6 @@ setTimeout(() => {
   document.getElementById('heroTitle').classList.add('show');
   document.getElementById('heroDesc').classList.add('show');
   document.getElementById('heroCta').classList.add('show');
-  document.getElementById('heroStats').classList.add('show');
 }, 100);
 
 // ── Scroll Reveal ─────────────────────────────────────────────────
@@ -638,25 +584,10 @@ document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
   }, { threshold: 0.08 }).observe(el);
 });
 
-// ── Stat counter ──────────────────────────────────────────────────
-new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const el = e.target;
-      const target = parseInt(el.dataset.count);
-      if (!target) return;
-      let cur = 0;
-      const step = Math.ceil(target / 45);
-      const iv = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(iv); }; el.textContent = cur + '+'; }, 25);
-      new IntersectionObserver(entries => { if (!entries[0].isIntersecting) clearInterval(iv); }).observe(el);
-    }
-  });
-}, { threshold: 0.5 }).observe(document.querySelector('[data-count]'));
-
 // ── Section nav dots ──────────────────────────────────────────────
 const dots = document.getElementById('section-dots');
-const secs = ['hero', 'about', 'skills', 'projects', 'contact'];
-const secLabels = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
+const secs = ['hero', 'about', 'skills', 'contact'];
+const secLabels = ['Home', 'About', 'Skills', 'Contact'];
 secs.forEach((id, i) => {
   const d = document.createElement('div');
   d.className = 'sec-dot';
