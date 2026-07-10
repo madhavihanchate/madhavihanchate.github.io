@@ -32,14 +32,21 @@
 
   #three-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-  /* ── Custom Cursor ── */
   #cursor-glow{position:fixed;width:32px;height:32px;border-radius:50%;pointer-events:none;z-index:9999;background:radial-gradient(circle,rgba(56,189,248,.5),transparent 70%);transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .3s,height .3s,background .3s}
   #cursor-glow.hover{width:64px;height:64px;background:radial-gradient(circle,rgba(129,140,248,.4),transparent 70%)}
   #cursor-dot{position:fixed;width:4px;height:4px;border-radius:50%;pointer-events:none;z-index:10000;background:#38bdf8;transform:translate(-50%,-50%);box-shadow:0 0 8px #38bdf8,0 0 20px #2563eb}
   .cursor-trail{position:fixed;width:3px;height:3px;border-radius:50%;pointer-events:none;z-index:9998;background:rgba(56,189,248,.3);transform:translate(-50%,-50%)}
 
-  /* ── Scroll progress ── */
+  /* Ripple */
+  .ripple{position:fixed;border-radius:50%;pointer-events:none;z-index:10001;transform:translate(-50%,-50%) scale(0);animation:rippleOut .8s ease-out forwards}
+  @keyframes rippleOut{to{transform:translate(-50%,-50%) scale(4);opacity:0}}
+
   #scroll-progress{position:fixed;top:0;left:0;height:2px;z-index:101;background:linear-gradient(90deg,#2563eb,#38bdf8,#818cf8);width:0%;transition:width .1s linear}
+
+  /* Section nav dots */
+  #section-dots{position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:99;display:flex;flex-direction:column;gap:.6rem}
+  .sec-dot{width:8px;height:8px;border-radius:50%;background:rgba(148,163,184,.25);border:1px solid rgba(148,163,184,.15);transition:all .4s;cursor:none}
+  .sec-dot.active{background:#38bdf8;border-color:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.5);transform:scale(1.4)}
 
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(4,13,26,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transform:translateY(0);transition:transform .4s}
   nav.hidden{transform:translateY(-100%)}
@@ -170,6 +177,12 @@
 
   .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
   .reveal.visible{opacity:1;transform:none}
+  .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal-left.visible{opacity:1;transform:none}
+  .reveal-right{opacity:0;transform:translateX(50px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal-right.visible{opacity:1;transform:none}
+  .reveal-scale{opacity:0;transform:scale(.8);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal-scale.visible{opacity:1;transform:scale(1)}
 
   @media(max-width:768px){
     .about-grid{grid-template-columns:1fr}
@@ -179,17 +192,17 @@
     .nav-links{gap:1.25rem}
     .photo-frame{width:180px;height:180px}
     body{cursor:auto}
-    #cursor-glow,#cursor-dot,.cursor-trail{display:none}
+    #cursor-glow,#cursor-dot,.cursor-trail,#section-dots{display:none}
     a,button,.btn,.tag,.project-link,.contact-card,.skill-card{cursor:auto}
   }
 </style>
 </head>
 <body>
-
 <canvas id="three-canvas"></canvas>
 <div id="cursor-glow"></div>
 <div id="cursor-dot"></div>
 <div id="scroll-progress"></div>
+<div id="section-dots"></div>
 
 <nav>
   <div class="nav-logo">&lt;<span>MH</span> /&gt;</div>
@@ -215,18 +228,11 @@
   </p>
   <p class="hero-desc" id="heroDesc">Transforming raw data into intelligent solutions. I build ML models, explore deep learning systems, and craft full-stack applications that bring AI to life.</p>
   <div class="hero-cta" id="heroCta">
-    <a href="#projects" class="btn btn-primary">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      <span>View My Work</span>
-    </a>
-    <a href="#contact" class="btn btn-ghost">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-      <span>Get In Touch</span>
-    </a>
+    <a href="#projects" class="btn btn-primary"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>View My Work</span></a>
+    <a href="#contact" class="btn btn-ghost"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg><span>Get In Touch</span></a>
   </div>
   <div class="hero-stats" id="heroStats">
     <div class="stat"><div class="stat-num" data-count="15">0</div><div class="stat-label">ML Projects</div></div>
-    <div class="stat"><div class="stat-num" data-count="5">0</div><div class="stat-label">Years Learning</div></div>
     <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-label">Technologies</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
   </div>
@@ -239,7 +245,7 @@
     <div class="divider"></div>
   </div>
   <div class="about-grid">
-    <div class="about-text reveal">
+    <div class="about-text reveal-left">
       <p>Hi! I'm <strong style="color:var(--accent2)">Madhavi Hanchate</strong>, a passionate Data Scientist and ML Engineer who loves uncovering patterns in complex data and building intelligent systems that solve real-world problems.</p>
       <p>My work spans the full ML lifecycle — from exploratory data analysis and feature engineering to model training, evaluation, and deployment. I'm especially excited about NLP, computer vision, and building AI-powered web applications.</p>
       <p>When I'm not training models or tuning hyperparameters, you'll find me contributing to open-source projects, exploring new papers on arXiv, or visualizing data in creative ways.</p>
@@ -248,12 +254,12 @@
         <a href="madhavi hanchate resume.pdf" download class="btn btn-ghost" style="font-size:.85rem;padding:.6rem 1.4rem">Download CV</a>
       </div>
     </div>
-    <div class="about-photo-wrap reveal">
+    <div class="about-photo-wrap reveal-right">
       <div class="photo-frame">
         <div class="photo-glow"></div>
         <img src="Madhavi.jpeg" alt="Madhavi Hanchate"/>
       </div>
-      <div class="about-card">
+      <div class="about-card reveal-scale">
         <div class="code-block">
           <span class="cm"># madhavi.py</span><br/>
           <span class="kw">class</span> <span class="fn">MadhaviHanchate</span>:<br/>
@@ -282,12 +288,12 @@
       <div class="divider"></div>
     </div>
     <div class="skills-grid">
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(37,99,235,.15)">🧠</div><div><div class="skill-card-title">ML & Deep Learning</div><div class="skill-card-sub">Model building & training</div></div></div><div class="skill-tags"><span class="tag tag-blue">TensorFlow</span><span class="tag tag-blue">PyTorch</span><span class="tag tag-blue">Keras</span><span class="tag tag-blue">scikit-learn</span><span class="tag tag-blue">XGBoost</span><span class="tag tag-blue">HuggingFace</span></div></div>
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(56,189,248,.12)">📊</div><div><div class="skill-card-title">Data Science</div><div class="skill-card-sub">Analysis & visualization</div></div></div><div class="skill-tags"><span class="tag tag-cyan">Python</span><span class="tag tag-cyan">Pandas</span><span class="tag tag-cyan">NumPy</span><span class="tag tag-cyan">Matplotlib</span><span class="tag tag-cyan">Seaborn</span><span class="tag tag-cyan">Plotly</span></div></div>
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(129,140,248,.12)">🌐</div><div><div class="skill-card-title">Web Development</div><div class="skill-card-sub">Frontend & backend</div></div></div><div class="skill-tags"><span class="tag tag-violet">HTML5</span><span class="tag tag-violet">CSS3</span><span class="tag tag-violet">JavaScript</span><span class="tag tag-violet">React</span><span class="tag tag-violet">Node.js</span><span class="tag tag-violet">FastAPI</span></div></div>
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(34,197,94,.1)">🗄️</div><div><div class="skill-card-title">Data & Cloud</div><div class="skill-card-sub">Storage & infrastructure</div></div></div><div class="skill-tags"><span class="tag tag-green">SQL</span><span class="tag tag-green">PostgreSQL</span><span class="tag tag-green">MongoDB</span><span class="tag tag-green">AWS</span><span class="tag tag-green">GCP</span><span class="tag tag-green">Docker</span></div></div>
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(251,146,60,.1)">🔬</div><div><div class="skill-card-title">NLP & GenAI</div><div class="skill-card-sub">Language models & AI</div></div></div><div class="skill-tags"><span class="tag tag-orange">LangChain</span><span class="tag tag-orange">OpenAI API</span><span class="tag tag-orange">RAG</span><span class="tag tag-orange">BERT</span><span class="tag tag-orange">GPT</span><span class="tag tag-orange">NLTK</span></div></div>
-      <div class="skill-card reveal" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(37,99,235,.12)">⚙️</div><div><div class="skill-card-title">MLOps & Tools</div><div class="skill-card-sub">Deployment & workflow</div></div></div><div class="skill-tags"><span class="tag tag-blue">Git</span><span class="tag tag-blue">MLflow</span><span class="tag tag-blue">Jupyter</span><span class="tag tag-blue">Linux</span><span class="tag tag-blue">Streamlit</span><span class="tag tag-blue">VS Code</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(37,99,235,.15)">🧠</div><div><div class="skill-card-title">ML & Deep Learning</div><div class="skill-card-sub">Model building & training</div></div></div><div class="skill-tags"><span class="tag tag-blue">TensorFlow</span><span class="tag tag-blue">PyTorch</span><span class="tag tag-blue">Keras</span><span class="tag tag-blue">scikit-learn</span><span class="tag tag-blue">XGBoost</span><span class="tag tag-blue">HuggingFace</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(56,189,248,.12)">📊</div><div><div class="skill-card-title">Data Science</div><div class="skill-card-sub">Analysis & visualization</div></div></div><div class="skill-tags"><span class="tag tag-cyan">Python</span><span class="tag tag-cyan">Pandas</span><span class="tag tag-cyan">NumPy</span><span class="tag tag-cyan">Matplotlib</span><span class="tag tag-cyan">Seaborn</span><span class="tag tag-cyan">Plotly</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(129,140,248,.12)">🌐</div><div><div class="skill-card-title">Web Development</div><div class="skill-card-sub">Frontend & backend</div></div></div><div class="skill-tags"><span class="tag tag-violet">HTML5</span><span class="tag tag-violet">CSS3</span><span class="tag tag-violet">JavaScript</span><span class="tag tag-violet">React</span><span class="tag tag-violet">Node.js</span><span class="tag tag-violet">FastAPI</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(34,197,94,.1)">🗄️</div><div><div class="skill-card-title">Data & Cloud</div><div class="skill-card-sub">Storage & infrastructure</div></div></div><div class="skill-tags"><span class="tag tag-green">SQL</span><span class="tag tag-green">PostgreSQL</span><span class="tag tag-green">MongoDB</span><span class="tag tag-green">AWS</span><span class="tag tag-green">GCP</span><span class="tag tag-green">Docker</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(251,146,60,.1)">🔬</div><div><div class="skill-card-title">NLP & GenAI</div><div class="skill-card-sub">Language models & AI</div></div></div><div class="skill-tags"><span class="tag tag-orange">LangChain</span><span class="tag tag-orange">OpenAI API</span><span class="tag tag-orange">RAG</span><span class="tag tag-orange">BERT</span><span class="tag tag-orange">GPT</span><span class="tag tag-orange">NLTK</span></div></div>
+      <div class="skill-card reveal-scale" data-tilt><div class="skill-card-header"><div class="skill-icon" style="background:rgba(37,99,235,.12)">⚙️</div><div><div class="skill-card-title">MLOps & Tools</div><div class="skill-card-sub">Deployment & workflow</div></div></div><div class="skill-tags"><span class="tag tag-blue">Git</span><span class="tag tag-blue">MLflow</span><span class="tag tag-blue">Jupyter</span><span class="tag tag-blue">Linux</span><span class="tag tag-blue">Streamlit</span><span class="tag tag-blue">VS Code</span></div></div>
     </div>
   </div>
 </section>
@@ -337,9 +343,9 @@
 // ── Custom Cursor ──────────────────────────────────────────────────
 const cGlow = document.getElementById('cursor-glow');
 const cDot = document.getElementById('cursor-dot');
-const trails = [];
 let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-let tx = cx, ty = cy;
+let tx = cx, ty = cx;
+const trails = [];
 
 document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
 document.addEventListener('mouseleave', () => { cGlow.style.opacity = '0'; cDot.style.opacity = '0'; });
@@ -365,24 +371,33 @@ function cursorAnim() {
     t.style.left = cx + 'px';
     t.style.top = cy + 'px';
     const s = 1 + Math.random() * 2;
-    t.style.width = s + 'px';
-    t.style.height = s + 'px';
+    t.style.width = s + 'px'; t.style.height = s + 'px';
     document.body.appendChild(t);
     trails.push(t);
     if (trails.length > 30) { const d = trails.shift(); if (d.parentNode) d.remove(); }
   }
-
   trails.forEach((t, i) => {
-    const o = 1 - i / trails.length;
-    t.style.opacity = o * 0.3;
+    t.style.opacity = (1 - i / trails.length) * 0.3;
     t.style.transform = `translate(-50%,-50%) scale(${1 - i / trails.length * 0.5})`;
   });
-
   requestAnimationFrame(cursorAnim);
 }
 cursorAnim();
 
-// ── Three.js ──────────────────────────────────────────────────────
+// ── Click Ripple ───────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  const size = 20 + Math.random() * 40;
+  r.style.width = size + 'px'; r.style.height = size + 'px';
+  r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+  r.style.border = '1px solid rgba(56,189,248,.5)';
+  r.style.background = 'rgba(56,189,248,.08)';
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 800);
+});
+
+// ── Three.js ───────────────────────────────────────────────────────
 const cnv = document.getElementById('three-canvas');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
@@ -390,7 +405,6 @@ const renderer = new THREE.WebGLRenderer({ canvas: cnv, alpha: true, antialias: 
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-// Central geometry — glowing torus knot
 const kg = new THREE.TorusKnotGeometry(0.45, 0.16, 180, 22);
 const km = new THREE.MeshPhysicalMaterial({
   color: new THREE.Color('#2563eb'), emissive: new THREE.Color('#3b82f6'),
@@ -403,77 +417,53 @@ scene.add(knot);
 
 const km2 = new THREE.MeshPhysicalMaterial({
   color: new THREE.Color('#38bdf8'), emissive: new THREE.Color('#38bdf8'),
-  emissiveIntensity: 0.1, metalness: 0.4, roughness: 0.1,
-  transparent: true, opacity: 0.12, wireframe: false,
+  emissiveIntensity: 0.1, metalness: 0.4, roughness: 0.1, transparent: true, opacity: 0.12,
 });
 const knot2 = new THREE.Mesh(new THREE.TorusKnotGeometry(0.28, 0.1, 100, 14), km2);
 knot2.position.copy(knot.position);
 scene.add(knot2);
 
-// Floating geometric shapes
+// Floating shapes
 const shapes = [];
-const shapeColors = [0x2563eb, 0x38bdf8, 0x818cf8, 0x22c55e, 0xf59e0b];
-for (let i = 0; i < 12; i++) {
-  const geo = [new THREE.IcosahedronGeometry(0.08, 0), new THREE.OctahedronGeometry(0.08, 0),
-               new THREE.DodecahedronGeometry(0.07, 0)][Math.floor(Math.random() * 3)];
+const shapeColors = [0x2563eb, 0x38bdf8, 0x818cf8];
+for (let i = 0; i < 14; i++) {
+  const geos = [new THREE.IcosahedronGeometry(0.08, 0), new THREE.OctahedronGeometry(0.08, 0), new THREE.DodecahedronGeometry(0.07, 0)];
   const mat = new THREE.MeshPhysicalMaterial({
-    color: shapeColors[i % shapeColors.length],
-    emissive: shapeColors[i % shapeColors.length],
-    emissiveIntensity: 0.05,
-    metalness: 0.3,
-    roughness: 0.4,
-    transparent: true,
-    opacity: 0.2 + Math.random() * 0.2,
+    color: shapeColors[i % 3], emissive: shapeColors[i % 3], emissiveIntensity: 0.05,
+    metalness: 0.3, roughness: 0.4, transparent: true, opacity: 0.15 + Math.random() * 0.2,
     wireframe: Math.random() > 0.5,
   });
-  const mesh = new THREE.Mesh(geo, mat);
-  const radius = 2 + Math.random() * 3.5;
-  const theta = Math.random() * Math.PI * 2;
-  const phi = Math.acos(2 * Math.random() - 1);
-  mesh.position.set(
-    radius * Math.sin(phi) * Math.cos(theta),
-    radius * Math.sin(phi) * Math.sin(theta),
-    radius * Math.cos(phi) - 3.5
-  );
+  const mesh = new THREE.Mesh(geos[Math.floor(Math.random() * 3)], mat);
+  const radius = 2 + Math.random() * 3.5, theta = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
+  mesh.position.set(radius * Math.sin(phi) * Math.cos(theta), radius * Math.sin(phi) * Math.sin(theta), radius * Math.cos(phi) - 3.5);
   mesh.userData = { radius, theta, phi, speed: 0.1 + Math.random() * 0.2, rotSpeed: 0.005 + Math.random() * 0.01 };
   scene.add(mesh);
   shapes.push(mesh);
 }
 
-// Particles — large field
+// Particles
 const PC = 3500;
 const pos = new Float32Array(PC * 3);
 const cols = new Float32Array(PC * 3);
 for (let i = 0; i < PC; i++) {
-  const r = 7 * Math.cbrt(Math.random());
-  const theta = Math.random() * Math.PI * 2;
-  const phi = Math.acos(2 * Math.random() - 1);
+  const r = 7 * Math.cbrt(Math.random()), theta = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
   pos[i*3] = r * Math.sin(phi) * Math.cos(theta);
   pos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
   pos[i*3+2] = r * Math.cos(phi) - 4;
   const t = Math.random();
-  cols[i*3] = 0.08 + t * 0.1;
-  cols[i*3+1] = 0.3 + t * 0.35;
-  cols[i*3+2] = 0.6 + t * 0.35;
+  cols[i*3] = 0.08 + t * 0.1; cols[i*3+1] = 0.3 + t * 0.35; cols[i*3+2] = 0.6 + t * 0.35;
 }
 const pG = new THREE.BufferGeometry();
 pG.setAttribute('position', new THREE.BufferAttribute(pos, 3));
 pG.setAttribute('color', new THREE.BufferAttribute(cols, 3));
-const pM = new THREE.PointsMaterial({
-  size: 0.03, vertexColors: true, transparent: true, opacity: 0.6,
-  blending: THREE.AdditiveBlending, sizeAttenuation: true,
-});
+const pM = new THREE.PointsMaterial({ size: 0.03, vertexColors: true, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, sizeAttenuation: true });
 const particles = new THREE.Points(pG, pM);
 scene.add(particles);
 
-// Neural net nodes
+// Neural nodes
 const NC = 400;
 const np = new Float32Array(NC * 3);
-for (let i = 0; i < NC; i++) {
-  np[i*3] = (Math.random() - 0.5) * 10;
-  np[i*3+1] = (Math.random() - 0.5) * 7;
-  np[i*3+2] = (Math.random() - 0.5) * 5 - 4;
-}
+for (let i = 0; i < NC; i++) { np[i*3] = (Math.random() - 0.5) * 10; np[i*3+1] = (Math.random() - 0.5) * 7; np[i*3+2] = (Math.random() - 0.5) * 5 - 4; }
 const nG = new THREE.BufferGeometry();
 nG.setAttribute('position', new THREE.BufferAttribute(np, 3));
 const nodes = new THREE.Points(nG, new THREE.PointsMaterial({ size: 0.018, color: 0x38bdf8, transparent: true, opacity: 0.25 }));
@@ -481,35 +471,60 @@ scene.add(nodes);
 
 // Connection lines
 const lp = [];
-for (let i = 0; i < NC; i++) {
-  for (let j = i + 1; j < NC; j++) {
-    const dx = np[i*3] - np[j*3], dy = np[i*3+1] - np[j*3+1], dz = np[i*3+2] - np[j*3+2];
-    if (Math.sqrt(dx*dx+dy*dy+dz*dz) < 1.5 && Math.random() < 0.1) {
-      lp.push(np[i*3], np[i*3+1], np[i*3+2], np[j*3], np[j*3+1], np[j*3+2]);
-    }
-  }
+for (let i = 0; i < NC; i++) for (let j = i + 1; j < NC; j++) {
+  const dx = np[i*3] - np[j*3], dy = np[i*3+1] - np[j*3+1], dz = np[i*3+2] - np[j*3+2];
+  if (Math.sqrt(dx*dx+dy*dy+dz*dz) < 1.5 && Math.random() < 0.1) lp.push(np[i*3], np[i*3+1], np[i*3+2], np[j*3], np[j*3+1], np[j*3+2]);
 }
 if (lp.length) {
   const lG = new THREE.BufferGeometry();
   lG.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
-  const lines = new THREE.LineSegments(lG, new THREE.LineBasicMaterial({ color: 0x818cf8, transparent: true, opacity: 0.05 }));
-  scene.add(lines);
+  scene.add(new THREE.LineSegments(lG, new THREE.LineBasicMaterial({ color: 0x818cf8, transparent: true, opacity: 0.05 })));
 }
 
-// Distant stars
+// Stars
 const stP = new Float32Array(1000 * 3);
-for (let i = 0; i < 1000; i++) {
-  stP[i*3] = (Math.random() - 0.5) * 80;
-  stP[i*3+1] = (Math.random() - 0.5) * 50;
-  stP[i*3+2] = -15 - Math.random() * 25;
-}
+for (let i = 0; i < 1000; i++) { stP[i*3] = (Math.random() - 0.5) * 80; stP[i*3+1] = (Math.random() - 0.5) * 50; stP[i*3+2] = -15 - Math.random() * 25; }
 const sG = new THREE.BufferGeometry();
 sG.setAttribute('position', new THREE.BufferAttribute(stP, 3));
 const stars = new THREE.Points(sG, new THREE.PointsMaterial({ size: 0.025, color: 0x94a2ff, transparent: true, opacity: 0.25, sizeAttenuation: true }));
 scene.add(stars);
 
-camera.position.z = 3;
+// Click burst particles
+let burstParticles = [];
+function createBurst(x, y, z) {
+  const count = 60;
+  const bPos = new Float32Array(count * 3);
+  const bVel = [];
+  const bCol = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    bPos[i*3] = x; bPos[i*3+1] = y; bPos[i*3+2] = z;
+    bVel.push({ x: (Math.random() - 0.5) * 0.15, y: (Math.random() - 0.5) * 0.15, z: (Math.random() - 0.5) * 0.15 });
+    const c = 0.3 + Math.random() * 0.7;
+    bCol[i*3] = 0.1 * c; bCol[i*3+1] = 0.5 * c; bCol[i*3+2] = 0.9 * c;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(bPos, 3));
+  g.setAttribute('color', new THREE.BufferAttribute(bCol, 3));
+  const m = new THREE.PointsMaterial({ size: 0.08, vertexColors: true, transparent: true, opacity: 1, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+  const p = new THREE.Points(g, m);
+  p.userData = { vel: bVel, life: 1 };
+  scene.add(p);
+  burstParticles.push(p);
+}
 
+// Click on canvas → burst
+cnv.addEventListener('click', e => {
+  const rect = cnv.getBoundingClientRect();
+  const x = (e.clientX / rect.width) * 2 - 1, y = -(e.clientY / rect.height) * 2 + 1;
+  const v = new THREE.Vector3(x, y, 0.5);
+  v.unproject(camera);
+  const dir = v.sub(camera.position).normalize();
+  const dist = -4;
+  const pos3 = camera.position.clone().add(dir.multiplyScalar(dist));
+  createBurst(pos3.x, pos3.y, pos3.z);
+});
+
+camera.position.z = 3;
 let mx = 0, my = 0, sy = 0;
 document.addEventListener('mousemove', e => { mx = (e.clientX / innerWidth - 0.5) * 2; my = (e.clientY / innerHeight - 0.5) * 2; });
 window.addEventListener('scroll', () => { sy = scrollY / (document.body.scrollHeight - innerHeight); });
@@ -524,44 +539,85 @@ function animate() {
   nodes.rotation.y = t * 0.015;
   stars.rotation.y = t * 0.003;
 
-  shapes.forEach((s, i) => {
+  shapes.forEach(s => {
     const ud = s.userData;
     ud.theta += ud.speed * 0.005;
     s.position.x = ud.radius * Math.sin(ud.theta) * Math.cos(ud.phi + t * 0.1);
     s.position.y = ud.radius * Math.sin(ud.theta) * Math.sin(ud.phi + t * 0.1);
     s.position.z = ud.radius * Math.cos(ud.theta) - 3.5;
-    s.rotation.x += ud.rotSpeed;
-    s.rotation.y += ud.rotSpeed * 0.7;
+    s.rotation.x += ud.rotSpeed; s.rotation.y += ud.rotSpeed * 0.7;
   });
+
+  // Animate burst particles
+  for (let i = burstParticles.length - 1; i >= 0; i--) {
+    const p = burstParticles[i];
+    const posA = p.geometry.attributes.position.array;
+    const vel = p.userData.vel;
+    p.userData.life -= 0.012;
+    if (p.userData.life <= 0) { scene.remove(p); burstParticles.splice(i, 1); continue; }
+    p.material.opacity = p.userData.life;
+    for (let j = 0; j < vel.length; j++) {
+      posA[j*3] += vel[j].x; posA[j*3+1] += vel[j].y; posA[j*3+2] += vel[j].z;
+    }
+    p.geometry.attributes.position.needsUpdate = true;
+  }
 
   knot.position.x += (mx * 0.2 - knot.position.x) * 0.012;
   knot.position.y += (-my * 0.2 - knot.position.y) * 0.012;
   knot2.position.copy(knot.position);
   camera.position.z = 3 + sy * 1.2;
 
+  // Scene hue shift with scroll
+  const hue = 0.58 + sy * 0.08;
+  knot.material.color.setHSL(hue, 0.7, 0.4);
+  knot.material.emissive.setHSL(hue, 0.8, 0.3);
+
   renderer.render(scene, camera);
 }
 animate();
 
-// ── Typewriter ────────────────────────────────────────────────────
+// ── Typewriter with Scramble ──────────────────────────────────────
 const phrases = ['Data Scientist 📊','ML Engineer 🤖','Deep Learning Dev 🧠','NLP Enthusiast 💬','Full-Stack Builder 🌐'];
-let pi = 0, ci = 0, deleting = false, wait = 0;
+let pi = 0, ci = 0, deleting = false, wait = 0, scrambling = false;
 const tel = document.getElementById('typing-text');
+const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+function scramble(nextPhrase) {
+  let progress = 0;
+  const length = Math.max(tel.textContent.length, nextPhrase.length);
+  scrambling = true;
+  const iv = setInterval(() => {
+    progress += 0.1;
+    let out = '';
+    for (let i = 0; i < length; i++) {
+      if (i < nextPhrase.length && progress > i * 0.08) out += nextPhrase[i];
+      else out += chars[Math.floor(Math.random() * chars.length)];
+    }
+    tel.textContent = out;
+    if (progress >= 1 + length * 0.08) { clearInterval(iv); tel.textContent = nextPhrase; scrambling = false; ci = nextPhrase.length; }
+  }, 30);
+}
+
 function type() {
+  if (scrambling) { setTimeout(type, 100); return; }
   const phrase = phrases[pi];
   if (!deleting) {
     tel.textContent = phrase.slice(0, ++ci);
-    if (ci === phrase.length) { deleting = true; wait = 60; }
+    if (ci === phrase.length) { deleting = true; wait = 60; setTimeout(type, 2000); return; }
   } else {
     if (wait-- > 0) { setTimeout(type, 40); return; }
-    tel.textContent = phrase.slice(0, --ci);
-    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    const next = phrases[(pi + 1) % phrases.length];
+    scramble(next);
+    pi = (pi + 1) % phrases.length;
+    deleting = false;
+    setTimeout(type, 600);
+    return;
   }
-  setTimeout(type, deleting ? 45 : 80);
+  setTimeout(type, deleting ? 35 : 65);
 }
-type();
+setTimeout(type, 1500);
 
-// ── Hero entrance animation ──────────────────────────────────────
+// ── Hero entrance ─────────────────────────────────────────────────
 setTimeout(() => {
   document.getElementById('heroBadge').classList.add('show');
   document.getElementById('heroName').classList.add('show');
@@ -571,84 +627,72 @@ setTimeout(() => {
   document.getElementById('heroStats').classList.add('show');
 }, 100);
 
-// ── Scroll Reveal (staggered) ────────────────────────────────────
-const observer = new IntersectionObserver((entries, obs) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const delay = parseInt(e.target.dataset.delay) || 0;
-      setTimeout(() => e.target.classList.add('visible'), delay);
-      obs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach((el, i) => {
+// ── Scroll Reveal ─────────────────────────────────────────────────
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach((el, i) => {
   el.dataset.delay = (i % 8) * 60;
-  observer.observe(el);
+  new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), parseInt(e.target.dataset.delay) || 0); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 }).observe(el);
 });
 
-// ── Stat counter animation ───────────────────────────────────────
-const statObserver = new IntersectionObserver((entries) => {
+// ── Stat counter ──────────────────────────────────────────────────
+new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       const el = e.target;
       const target = parseInt(el.dataset.count);
       if (!target) return;
-      let current = 0;
+      let cur = 0;
       const step = Math.ceil(target / 45);
-      const iv = setInterval(() => {
-        current += step;
-        if (current >= target) { current = target; clearInterval(iv); }
-        el.textContent = current + '+';
-      }, 25);
-      statObserver.unobserve(el);
+      const iv = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(iv); }; el.textContent = cur + '+'; }, 25);
+      new IntersectionObserver(entries => { if (!entries[0].isIntersecting) clearInterval(iv); }).observe(el);
     }
   });
-}, { threshold: 0.5 });
-document.querySelectorAll('[data-count]').forEach(el => statObserver.observe(el));
+}, { threshold: 0.5 }).observe(document.querySelector('[data-count]'));
 
-// ── Nav active tracking ──────────────────────────────────────────
-const secs = document.querySelectorAll('section[id]');
-const nls = document.querySelectorAll('.nav-links a');
+// ── Section nav dots ──────────────────────────────────────────────
+const dots = document.getElementById('section-dots');
+const secs = ['hero', 'about', 'skills', 'projects', 'contact'];
+const secLabels = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
+secs.forEach((id, i) => {
+  const d = document.createElement('div');
+  d.className = 'sec-dot';
+  d.title = secLabels[i];
+  d.addEventListener('click', () => document.getElementById(id).scrollIntoView({ behavior: 'smooth' }));
+  dots.appendChild(d);
+});
+const allDots = dots.querySelectorAll('.sec-dot');
 window.addEventListener('scroll', () => {
   let cur = '';
-  secs.forEach(s => { if (scrollY >= s.offsetTop - 150) cur = s.id; });
-  nls.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
-  // Scroll progress
+  secs.forEach(s => { if (scrollY >= document.getElementById(s).offsetTop - 200) cur = s; });
+  allDots.forEach((d, i) => d.classList.toggle('active', secs[i] === cur));
   const p = scrollY / (document.body.scrollHeight - innerHeight);
   document.getElementById('scroll-progress').style.width = (p * 100) + '%';
 });
 
-// ── Nav hide/show ────────────────────────────────────────────────
+// ── Nav hide/show ─────────────────────────────────────────────────
 let ls = 0;
-window.addEventListener('scroll', () => {
-  const c = scrollY;
-  document.querySelector('nav').classList.toggle('hidden', c > ls && c > 100);
-  ls = c;
-});
+window.addEventListener('scroll', () => { const c = scrollY; document.querySelector('nav').classList.toggle('hidden', c > ls && c > 100); ls = c; });
 
 // ── 3D Tilt ──────────────────────────────────────────────────────
 document.querySelectorAll('[data-tilt]').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
     card.style.transform = `perspective(600px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-6px)`;
     card.style.borderColor = 'rgba(56,189,248,0.5)';
     card.style.boxShadow = `0 20px 60px rgba(37,99,235,.2), ${x*20}px ${y*20}px 40px rgba(37,99,235,.1)`;
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) translateY(0px)';
-    card.style.borderColor = '';
-    card.style.boxShadow = '';
-  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; card.style.borderColor = ''; card.style.boxShadow = ''; });
 });
 
 // ── Magnetic buttons ────────────────────────────────────────────
 document.querySelectorAll('.btn').forEach(btn => {
   btn.addEventListener('mousemove', e => {
     const r = btn.getBoundingClientRect();
-    const x = (e.clientX - r.left - r.width/2) * 0.25;
-    const y = (e.clientY - r.top - r.height/2) * 0.25;
+    const x = (e.clientX - r.left - r.width/2) * 0.25, y = (e.clientY - r.top - r.height/2) * 0.25;
     btn.style.transform = `translate(${x}px, ${y}px)`;
   });
   btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
